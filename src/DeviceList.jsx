@@ -3,12 +3,9 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {styles} from './styles/styles';
 
-const deviceNameAlias = [
-  {deviceName: 'BLE_ESP32_PCS3858_SERVER', alias: 'Ponto de ônibus 1'},
-];
+import {BUS_STOPS_IDS} from '../App';
 
-const mapDeviceNameToAlias = name =>
-  deviceNameAlias.find(relation => relation.deviceName === name).alias;
+const mapIdToAlias = id => `Ponto de ônibus ${BUS_STOPS_IDS.indexOf(id) + 1}`;
 
 export const DeviceList = ({peripheral, connect, disconnect}) => {
   const {name, rssi, connected, id} = peripheral;
@@ -18,7 +15,7 @@ export const DeviceList = ({peripheral, connect, disconnect}) => {
       {name && (
         <View style={styles.deviceContainer}>
           <View style={styles.deviceItem}>
-            <Text style={styles.deviceName}>{mapDeviceNameToAlias(name)}</Text>
+            <Text style={styles.deviceName}>{mapIdToAlias(id)}</Text>
             <Text style={styles.deviceInfo}>RSSI: {rssi}</Text>
             <Text style={styles.deviceInfo}>MAC: {id}</Text>
           </View>
@@ -52,7 +49,7 @@ export const RetrieveList = ({peripheral, retrieve}) => {
       {name && (
         <View style={styles.deviceContainer}>
           <View style={styles.deviceItem}>
-            <Text style={styles.deviceName}>{mapDeviceNameToAlias(name)}</Text>
+            <Text style={styles.deviceName}>{mapIdToAlias(name)}</Text>
             <Text style={styles.deviceInfo}>RSSI: {rssi}</Text>
             <Text style={styles.deviceInfo}>MAC: {id}</Text>
           </View>

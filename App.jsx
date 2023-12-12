@@ -37,7 +37,7 @@ const CHARACTERISTICS = [
   {characteristic: CHARACTERISTIC_UUID_8022_3, service: SERVICE_UUID_8022},
 ];
 
-const BUS_STOPS_IDS = ['24:0A:C4:FC:C5:E2', 'E0:E2:E6:00:6A:02'];
+export const BUS_STOPS_IDS = ['24:0A:C4:FC:C5:E2', 'E0:E2:E6:00:6A:02'];
 
 const BleManagerModule = NativeModules.BleManager;
 const BleManagerEmitter = new NativeEventEmitter(BleManagerModule);
