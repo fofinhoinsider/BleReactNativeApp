@@ -37,7 +37,7 @@ const CHARACTERISTICS = [
   {characteristic: CHARACTERISTIC_UUID_8022_3, service: SERVICE_UUID_8022},
 ];
 
-const BUS_STOPS_IDS = ['24:0A:C4:FC:C5:E2'];
+const BUS_STOPS_IDS = ['24:0A:C4:FC:C5:E2', 'E0:E2:E6:00:6A:02'];
 
 const BleManagerModule = NativeModules.BleManager;
 const BleManagerEmitter = new NativeEventEmitter(BleManagerModule);
@@ -165,16 +165,26 @@ const App = () => {
   const retrieve = async peripheral => {
     setIsFetching(true);
     const scheduleData = await Promise.all(
-      CHARACTERISTICS.map(async characteristic => ({
-        ...characteristic,
-        data: myReadInt32LEFromByteArray(
-          await BleManager.read(
-            peripheral.id,
-            characteristic.service,
-            characteristic.characteristic,
-          ),
-        ),
-      })),
+      CHARACTERISTICS.map(async characteristic => {
+        let byteArray = await BleManager.read(
+          peripheral.id,
+          characteristic.service,
+          characteristic.characteristic,
+        );
+
+        let timestamp = myReadInt32LEFromByteArray(byteArray);
+        let date = new Date(1000 * timestamp);
+
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+
+        let data = `${hours}:${minutes}`;
+
+        return {
+          ...characteristic,
+          data,
+        };
+      }),
     );
 
     setSchedule(scheduleData);
